@@ -22,7 +22,7 @@ public class RegistryHandler  extends ChannelInboundHandlerAdapter {
     
     public RegistryHandler(){
     	//完成递归扫描
-    	scannerClass("com.gupaoedu.vip.netty.rpc.provider");
+    	scannerClass("org.netty.demo.rpc.provider");
     	doRegister();
     }
     

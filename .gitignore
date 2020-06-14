@@ -15,3 +15,6 @@ netty-chat/netty-chat.iml
 netty-io/netty-io.iml
 netty-rpc/netty-rpc.iml
 netty-tomcat/netty-tomcat.iml
+.idea/codeStyles/
+netty4-samples.iml
+/logs/
