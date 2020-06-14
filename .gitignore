@@ -1,0 +1,17 @@
+/.idea/modules.xml
+/.idea/netty4-samples.iml
+/.idea/inspectionProfiles/Project_Default.xml
+/.idea/vcs.xml
+/.idea/workspace.xml
+.idea/.gitignore
+.idea/compiler.xml
+.idea/jarRepositories.xml
+.idea/misc.xml
+netty-chat/target/
+netty-io/target/
+netty-tomcat/target/
+.idea/libraries/
+netty-chat/netty-chat.iml
+netty-io/netty-io.iml
+netty-rpc/netty-rpc.iml
+netty-tomcat/netty-tomcat.iml
