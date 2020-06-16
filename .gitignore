@@ -18,3 +18,5 @@ netty-tomcat/netty-tomcat.iml
 .idea/codeStyles/
 netty4-samples.iml
 /logs/
+/netty-rpc/target/
+/.idea/
