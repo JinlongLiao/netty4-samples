@@ -1,4 +1,5 @@
 package org.netty.demo.io.aio;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
@@ -28,7 +29,7 @@ public class AIOServer {
 
     private void listen() {
         try {
-            ExecutorService executorService = Executors.newCachedThreadPool();
+            ExecutorService executorService = Executors.newWorkStealingPool();
             AsynchronousChannelGroup threadGroup = AsynchronousChannelGroup.withCachedThreadPool(executorService, 1);
             //开门营业
             //工作线程，用来侦听回调的，事件响应的时候需要回调
@@ -37,12 +38,14 @@ public class AIOServer {
             System.out.println("服务已启动，监听端口" + port);
 
             //准备接受数据
-            server.accept(null, new CompletionHandler<AsynchronousSocketChannel, Object>(){
+            server.accept(null, new CompletionHandler<AsynchronousSocketChannel, Object>() {
                 final ByteBuffer buffer = ByteBuffer.allocateDirect(1024);
+
                 //实现completed方法来回调
                 //由操作系统来触发
                 //回调有两个状态，成功
-                public void completed(AsynchronousSocketChannel result, Object attachment){
+                @Override
+                public void completed(AsynchronousSocketChannel result, Object attachment) {
                     System.out.println("IO操作成功，开始获取数据");
                     try {
                         buffer.clear();
