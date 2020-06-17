@@ -1,4 +1,6 @@
-package org.netty.demo.chat.reactor;
+package org.netty.demo.chat.reactor.server.accptor;
+
+import org.netty.demo.chat.reactor.server.handler.TcpHandler;
 
 import java.io.IOException;
 import java.nio.channels.SelectionKey;
@@ -10,15 +12,21 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Acceptor implements Runnable {
 
     private final ServerSocketChannel serverSocketChannel;
-    private final int cores = Runtime.getRuntime().availableProcessors() * 2;
-    private AtomicInteger atomicInteger = new AtomicInteger(cores);
-    private final Selector[] selectors = new Selector[cores];
+    private final int cores;
+    private AtomicInteger atomicInteger;
+    private final Selector[] selectors;
     private int selIndex = 0;
-    private TCPSubReactor tcpSubReactors[] = new TCPSubReactor[cores];
-    private Thread[] threads = new Thread[cores];
+    private TCPSubReactor tcpSubReactors[];
+    private Thread[] threads;
 
-    public Acceptor(ServerSocketChannel serverSocketChannel) {
+    public Acceptor(ServerSocketChannel serverSocketChannel, int cores) {
+        this.cores = cores;
+        this.atomicInteger = new AtomicInteger(cores);
         this.serverSocketChannel = serverSocketChannel;
+        this.selectors = new Selector[cores];
+        this.tcpSubReactors = new TCPSubReactor[cores];
+        this.threads = new Thread[cores];
+
         try {
             for (int i = 0; i < cores; i++) {
                 selectors[i] = Selector.open();

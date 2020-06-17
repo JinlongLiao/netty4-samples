@@ -6,32 +6,28 @@ import java.util.Scanner;
 
 public class BioClient {
     public static void main(String[] args) {
-        try{
-            final Socket socket = new Socket("127.0.0.1",8080);
-           new Thread() {
-             @Override
-             public void run(){
-                 while(true){
-                     try{
-                         byte[] b = new byte[1024];
-                         int read = socket.getInputStream().read(b);
-                         System.out.println(new String(b));
-                     }catch (Exception e){
+        try (Socket socket = new Socket("127.0.0.1", 8080);) {
+            new Thread(() -> {
+                while (true) {
+                    try {
+                        byte[] bytes = new byte[1024];
+                        int read = socket.getInputStream().read(bytes);
+                        System.out.println(new String(bytes));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
 
-                     }
-                 }
-             }
-            }.start();
-
-            while(true){
+            while (true) {
                 Scanner scanner = new Scanner(System.in);
-                while(scanner.hasNextLine()){
+                while (scanner.hasNextLine()) {
                     String s = scanner.nextLine();
                     socket.getOutputStream().write(s.getBytes());
                 }
             }
-        }catch (IOException e){
-          e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

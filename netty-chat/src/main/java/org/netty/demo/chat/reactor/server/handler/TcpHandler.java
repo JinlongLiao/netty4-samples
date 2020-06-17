@@ -1,4 +1,7 @@
-package org.netty.demo.chat.reactor;
+package org.netty.demo.chat.reactor.server.handler;
+
+import org.netty.demo.chat.reactor.server.state.HandlerState;
+import org.netty.demo.chat.reactor.server.state.ReadState;
 
 import java.io.IOException;
 import java.nio.channels.SelectionKey;
@@ -16,9 +19,9 @@ public class TcpHandler implements Runnable {
     private SelectionKey selectionKey;
     private SocketChannel socketChannel;
 
-    public TcpHandler(SelectionKey sk, SocketChannel sc) {
-        this.selectionKey = sk;
-        this.socketChannel = sc;
+    public TcpHandler(SelectionKey selectionKey, SocketChannel socketChannel) {
+        this.selectionKey = selectionKey;
+        this.socketChannel = socketChannel;
         //初始状态设定为READING
         state = new ReadState();
     }
@@ -28,7 +31,7 @@ public class TcpHandler implements Runnable {
         try {
             state.handler(this, selectionKey, socketChannel, pool);
         } catch (IOException e) {
-            System.out.println("warning A client has been closed");
+            System.err.println("warning A client has been closed");
             closeChannel();
         }
     }

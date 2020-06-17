@@ -1,4 +1,6 @@
-package org.netty.demo.chat.reactor;
+package org.netty.demo.chat.reactor.server.boss;
+
+import org.netty.demo.chat.reactor.server.accptor.Acceptor;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -13,6 +15,7 @@ public class BossGroup implements Runnable {
     private ServerSocketChannel serverSocketChannel;
 
     private Selector selector;
+    private static final int cores = Runtime.getRuntime().availableProcessors() * 2;
 
     public BossGroup(int port) {
 
@@ -23,7 +26,7 @@ public class BossGroup implements Runnable {
             serverSocketChannel.configureBlocking(false);
             SelectionKey sk = serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
 //            指定附加对象
-            sk.attach(new Acceptor(serverSocketChannel));
+            sk.attach(new Acceptor(serverSocketChannel, cores));
             InetSocketAddress addr = new InetSocketAddress(port);
             serverSocketChannel.socket().bind(addr);
         } catch (IOException e) {
@@ -56,7 +59,7 @@ public class BossGroup implements Runnable {
     }
 
     public void dispatch(SelectionKey selectionKey) {
-        //调用run方法
+        //调用run方法             sk.attach(new Acceptor(serverSocketChannel));
         Runnable runnable = (Runnable) selectionKey.attachment();
         if (runnable != null) {
             runnable.run();

@@ -1,12 +1,13 @@
-package org.netty.demo.chat.reactor;
+package org.netty.demo.chat.reactor.server.state;
+
+import org.netty.demo.chat.reactor.server.handler.TcpHandler;
 
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
 import java.util.concurrent.ThreadPoolExecutor;
 
-public class WorkState implements  HandlerState{
+public class WorkState implements HandlerState {
     private SelectionKey sk;
     private TcpHandler tcpHandler;
     private String str;
